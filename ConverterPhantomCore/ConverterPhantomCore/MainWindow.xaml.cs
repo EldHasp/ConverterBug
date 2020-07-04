@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Threading;
 
 namespace ConverterPhantomCore
 {
@@ -165,17 +166,32 @@ namespace ConverterPhantomCore
             object parameter,
             CultureInfo culture)
         {
-            if (values.Length == 4 &&
-                values[0] is double value &&
-                values[1] is double min &&
-                values[2] is double max &&
-                values[3] is double canvasWidthHeight)
+            if (values.Length != 4 ||
+                !(values[0] is double value) ||
+                !(values[1] is double min) ||
+                !(values[2] is double max) ||
+                !(values[3] is double canvasWidthHeight))
+            {
+                return null;
+            }
+
+            try
             {
                 return canvasWidthHeight * RangeToNormalizedValue(min, max, value);
             }
-
-            return values;
+            catch (ArgumentException e) when (e.Message == ValueLessThanMin)
+            {
+                return 0;
+            }
+            catch (ArgumentException e) when (e.Message == ValueGreaterThanMax)
+            {
+                return canvasWidthHeight;
+            }
         }
+
+        // This is in a utility class normally
+        private const string ValueLessThanMin = "Value cannot be less than min";
+        private const string ValueGreaterThanMax = "Value cannot be greater than max";
 
         private static double RangeToNormalizedValue(
             double min,
@@ -189,12 +205,12 @@ namespace ConverterPhantomCore
 
             if (value < min)
             {
-                throw new ArgumentException("Value cannot be less than min");
+                throw new ArgumentException(ValueLessThanMin);
             }
 
             if (value > max)
             {
-                throw new ArgumentException("Value cannot be greater than max");
+                throw new ArgumentException(ValueGreaterThanMax);
             }
 
             return (value - min) / (max - min);
