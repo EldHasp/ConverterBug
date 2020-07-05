@@ -175,18 +175,7 @@ namespace ConverterPhantomCore
                 return null;
             }
 
-            try
-            {
-                return canvasWidthHeight * RangeToNormalizedValue(min, max, value);
-            }
-            catch (ArgumentException e) when (e.Message == ValueLessThanMin)
-            {
-                return 0;
-            }
-            catch (ArgumentException e) when (e.Message == ValueGreaterThanMax)
-            {
-                return canvasWidthHeight;
-            }
+            return canvasWidthHeight * RangeToNormalizedValue(min, max, value);
         }
 
         // This is in a utility class normally
