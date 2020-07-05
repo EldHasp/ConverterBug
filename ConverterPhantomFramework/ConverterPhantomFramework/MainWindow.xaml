@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ConverterPhantomFramework"
         mc:Ignorable="d"
-        d:DataContext="{d:DesignInstance Type=local:MainWindow, IsDesignTimeCreatable=True}"
+        d:DataContext="{d:DesignInstance Type=local:ViewModel, IsDesignTimeCreatable=True}"
         Title="MainWindow" Height="450" Width="800">
     <Window.DataContext>
         <local:ViewModel/>
@@ -69,13 +69,13 @@
                                     </MultiBinding>
                                 </Setter.Value>
                             </Setter>
-                            <Setter Property="Width" Value="50" />
-                            <Setter Property="Height" Value="50" />
+                            <!--<Setter Property="Width" Value="50" />
+                            <Setter Property="Height" Value="50" />-->
                         </Style>
                     </ItemsControl.ItemContainerStyle>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Grid Background="Red" />
+                            <Rectangle Fill="Red" Width="50" Height="50"/>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
