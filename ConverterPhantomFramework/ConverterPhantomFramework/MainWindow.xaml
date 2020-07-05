@@ -7,6 +7,9 @@
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=local:MainWindow, IsDesignTimeCreatable=True}"
         Title="MainWindow" Height="450" Width="800">
+    <Window.DataContext>
+        <local:ViewModel/>
+    </Window.DataContext>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -29,8 +32,8 @@
                     <local:CanvasPositionScaleConverter x:Key="CanvasPositionScaleConverter" />
                 </Border.Resources>
                 <ItemsControl ItemsSource="{Binding Squares}"
-                                  Width="{Binding Size, Converter={StaticResource CanvasScaleConverter}}"
-                                  Height="{Binding Size, Converter={StaticResource CanvasScaleConverter}}">
+                                  Width="{Binding Range.Size, Converter={StaticResource CanvasScaleConverter}}"
+                                  Height="{Binding Range.Size, Converter={StaticResource CanvasScaleConverter}}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <Canvas />
@@ -43,11 +46,11 @@
                                     <MultiBinding Converter="{StaticResource CanvasPositionScaleConverter}">
                                         <Binding Path="X" />
                                         <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type Window}}" 
-                                                     Path="DataContext.Min" />
+                                                     Path="DataContext.Range.Min" />
                                         <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type Window}}" 
-                                                     Path="DataContext.Max" />
+                                                     Path="DataContext.Range.Max" />
                                         <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type Window}}" 
-                                                     Path="DataContext.Size"
+                                                     Path="DataContext.Range.Size"
                                                      Converter="{StaticResource CanvasScaleConverter}" />
                                     </MultiBinding>
                                 </Setter.Value>
@@ -57,11 +60,11 @@
                                     <MultiBinding Converter="{StaticResource CanvasPositionScaleConverter}">
                                         <Binding Path="Y" />
                                         <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type Window}}" 
-                                                     Path="DataContext.Min" />
+                                                     Path="DataContext.Range.Min" />
                                         <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type Window}}" 
-                                                     Path="DataContext.Max" />
+                                                     Path="DataContext.Range.Max" />
                                         <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type Window}}" 
-                                                     Path="DataContext.Size"
+                                                     Path="DataContext.Range.Size"
                                                      Converter="{StaticResource CanvasScaleConverter}" />
                                     </MultiBinding>
                                 </Setter.Value>
@@ -82,11 +85,11 @@
         <Button Grid.Column="0"
                 Grid.Row="1"
                 Content="Clear"
-                Click="Clear" />
+                Command="{Binding ClearCommand}" />
 
         <Button Grid.Column="1"
                 Grid.Row="1"
                 Content="Resize"
-                Click="Resize" />
+                Command="{Binding ResizeCommand}" />
     </Grid>
 </Window>
